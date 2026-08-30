@@ -4,7 +4,6 @@ A simple fullscreen wildlife livestream display. Currently deployed to https://d
 
 The site finds live wildlife cameras from YouTube and automatically rotates between them.
 
-
 ### Local development
 
 Create .dev.vars:
@@ -18,7 +17,6 @@ Run:
 Then open:
 
 http://localhost:8788
-
 
 ### Deploy to Cloudflare
 

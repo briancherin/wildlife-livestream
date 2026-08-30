@@ -1,1761 +1,1297 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
 
-  <title>Wildlife Wall</title>
+    <title>Wildlife Wall</title>
 
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
-
-    #playerScreen {
-      position: fixed;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      background: #000;
-    }
-
-    #player {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
-    }
-
-    #overlay {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 18px 20px;
-      box-sizing: border-box;
-      background: rgba(0,0,0,0.55);
-      z-index: 20;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    #overlay.visible {
-      opacity: 1;
-    }
-
-    #streamTitle {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    #streamChannel {
-      font-size: 13px;
-      opacity: 0.8;
-    }
-
-    #clock {
-      position: fixed;
-      top: 14px;
-      right: 18px;
-      z-index: 25;
-      font-size: 20px;
-      text-shadow: 0 1px 5px #000;
-      pointer-events: none;
-    }
-
-    #controlsButton {
-  position: fixed;
-  left: 10px;
-  top: 10px;
-  z-index: 50;
-
-  background: rgba(0,0,0,0.55);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.45);
-  border-radius: 5px;
-
-  font-size: 14px;
-  padding: 9px 13px;
-
-  /* Normally almost invisible */
-  opacity: 0.08;
-
-  transition: opacity 0.4s;
-}
-
-#controlsButton.visible {
-  opacity: 1;
-}
-
-    #admin {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-
-      background: #151515;
-      overflow-y: auto;
-      box-sizing: border-box;
-      padding: 18px;
-    }
-
-    #admin.open {
-      display: block;
-    }
-
-    h1 {
-      margin: 0 0 15px;
-      font-size: 24px;
-    }
-
-    h2 {
-      font-size: 18px;
-      margin: 24px 0 10px;
-    }
-
-    .row {
-      margin-bottom: 12px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 13px;
-      opacity: 0.8;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    input[type="number"],
-    select {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 10px;
-
-      background: #262626;
-      color: #fff;
-      border: 1px solid #555;
-      border-radius: 4px;
-      font-size: 15px;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 10px 14px;
-      margin: 3px;
-
-      background: #333;
-      color: #fff;
-      border: 1px solid #666;
-      border-radius: 5px;
-
-      font-size: 14px;
-    }
-
-    .button.primary {
-      background: #eee;
-      color: #111;
-    }
-
-    .button.danger {
-      background: #4b2222;
-    }
-
-    #status {
-      margin: 12px 0;
-      padding: 10px;
-      background: #252525;
-      border-radius: 5px;
-      font-size: 13px;
-      min-height: 16px;
-    }
-
-    #results {
-      margin-top: 15px;
-    }
-
-    .result {
-      display: table;
-      width: 100%;
-      box-sizing: border-box;
-
-      padding: 10px 0;
-      border-bottom: 1px solid #333;
-    }
-
-    .thumbHolder,
-    .resultInfo {
-      display: table-cell;
-      vertical-align: top;
-    }
-
-    .thumbHolder {
-      width: 130px;
-      padding-right: 12px;
-    }
-
-    .thumb {
-      width: 120px;
-      height: 68px;
-      object-fit: cover;
-      background: #222;
-    }
-
-    .resultTitle {
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .resultChannel {
-      opacity: 0.7;
-      font-size: 12px;
-      margin-bottom: 7px;
-    }
-
-    .score {
-      font-size: 11px;
-      opacity: 0.55;
-      margin-bottom: 5px;
-    }
-
-    #currentInfo {
-      background: #222;
-      padding: 12px;
-      border-radius: 5px;
-      font-size: 13px;
-    }
-
-    .queryCheckbox {
-      display: block;
-      padding: 4px 0;
-    }
-
-    #searchProgress {
-      font-size: 13px;
-      opacity: 0.7;
-      margin-top: 5px;
-    }
-
-    @media (max-width: 600px) {
-      .thumbHolder {
-        width: 105px;
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
       }
 
-      .thumb {
-        width: 95px;
-        height: 54px;
+      #playerScreen {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #000;
+      }
+
+      #player {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+
+      #overlay {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 18px 20px;
+        box-sizing: border-box;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 20;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      #overlay.visible {
+        opacity: 1;
+      }
+
+      #streamTitle {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      #streamChannel {
+        font-size: 13px;
+        opacity: 0.8;
+      }
+
+      #clock {
+        position: fixed;
+        top: 14px;
+        right: 18px;
+        z-index: 25;
+        font-size: 20px;
+        text-shadow: 0 1px 5px #000;
+        pointer-events: none;
+      }
+
+      #controlsButton {
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        z-index: 50;
+
+        background: rgba(0, 0, 0, 0.55);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 5px;
+
+        font-size: 14px;
+        padding: 9px 13px;
+
+        /* Normally almost invisible */
+        opacity: 0.08;
+
+        transition: opacity 0.4s;
+      }
+
+      #controlsButton.visible {
+        opacity: 1;
       }
 
       #admin {
-        padding: 12px;
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        background: #151515;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 18px;
       }
-    }
-  </style>
-</head>
 
-<body>
+      #admin.open {
+        display: block;
+      }
 
+      h1 {
+        margin: 0 0 15px;
+        font-size: 24px;
+      }
 
-  <!-- ============================================================
+      h2 {
+        font-size: 18px;
+        margin: 24px 0 10px;
+      }
+
+      .row {
+        margin-bottom: 12px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
+        opacity: 0.8;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="number"],
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+
+        background: #262626;
+        color: #fff;
+        border: 1px solid #555;
+        border-radius: 4px;
+        font-size: 15px;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 10px 14px;
+        margin: 3px;
+
+        background: #333;
+        color: #fff;
+        border: 1px solid #666;
+        border-radius: 5px;
+
+        font-size: 14px;
+      }
+
+      .button.primary {
+        background: #eee;
+        color: #111;
+      }
+
+      .button.danger {
+        background: #4b2222;
+      }
+
+      #status {
+        margin: 12px 0;
+        padding: 10px;
+        background: #252525;
+        border-radius: 5px;
+        font-size: 13px;
+        min-height: 16px;
+      }
+
+      #results {
+        margin-top: 15px;
+      }
+
+      .result {
+        display: table;
+        width: 100%;
+        box-sizing: border-box;
+
+        padding: 10px 0;
+        border-bottom: 1px solid #333;
+      }
+
+      .thumbHolder,
+      .resultInfo {
+        display: table-cell;
+        vertical-align: top;
+      }
+
+      .thumbHolder {
+        width: 130px;
+        padding-right: 12px;
+      }
+
+      .thumb {
+        width: 120px;
+        height: 68px;
+        object-fit: cover;
+        background: #222;
+      }
+
+      .resultTitle {
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .resultChannel {
+        opacity: 0.7;
+        font-size: 12px;
+        margin-bottom: 7px;
+      }
+
+      .score {
+        font-size: 11px;
+        opacity: 0.55;
+        margin-bottom: 5px;
+      }
+
+      #currentInfo {
+        background: #222;
+        padding: 12px;
+        border-radius: 5px;
+        font-size: 13px;
+      }
+
+      .queryCheckbox {
+        display: block;
+        padding: 4px 0;
+      }
+
+      #searchProgress {
+        font-size: 13px;
+        opacity: 0.7;
+        margin-top: 5px;
+      }
+
+      @media (max-width: 600px) {
+        .thumbHolder {
+          width: 105px;
+        }
+
+        .thumb {
+          width: 95px;
+          height: 54px;
+        }
+
+        #admin {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ============================================================
        FULLSCREEN DISPLAY
        ============================================================ -->
 
-  <div id="playerScreen">
+    <div id="playerScreen">
+      <iframe id="player" src="" allow="autoplay; fullscreen" allowfullscreen>
+      </iframe>
 
-    <iframe
-      id="player"
-      src=""
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
-    
+      <!-- <div id="clock"></div> -->
+      <div id="controlsWakeZone" onclick="showControls()"></div>
 
-    <!-- <div id="clock"></div> -->
-       <div id="controlsWakeZone" onclick="showControls()"></div>
+      <button id="controlsButton" onclick="openAdmin()">Controls</button>
 
-
-    <button id="controlsButton" onclick="openAdmin()">
-      Controls
-    </button>
-
-    <div id="overlay">
-      <div id="streamTitle"></div>
-      <div id="streamChannel"></div>
+      <div id="overlay">
+        <div id="streamTitle"></div>
+        <div id="streamChannel"></div>
+      </div>
     </div>
 
-  </div>
-
-
-  <!-- ============================================================
+    <!-- ============================================================
        ADMIN PANEL
        ============================================================ -->
 
-  <div id="admin">
+    <div id="admin">
+      <h1>Wildlife Wall</h1>
 
-    <h1>Wildlife Wall</h1>
+      <div>
+        <button class="button primary" onclick="closeAdmin()">
+          Return to display
+        </button>
 
-    <div>
-      <button class="button primary" onclick="closeAdmin()">
-        Return to display
-      </button>
+        <button class="button" onclick="surpriseMe()">Surprise me</button>
 
-      <button class="button" onclick="surpriseMe()">
-        Surprise me
-      </button>
+        <button class="button" onclick="nextStream()">Next</button>
+      </div>
 
-      <button class="button" onclick="nextStream()">
-        Next
-      </button>
-    </div>
+      <h2>Current stream</h2>
 
+      <div id="currentInfo">Nothing selected yet.</div>
 
-    <h2>Current stream</h2>
+      <h2>YouTube API</h2>
 
-    <div id="currentInfo">
-      Nothing selected yet.
-    </div>
+      <div class="row">
+        <label>YouTube Data API v3 key</label>
 
+        <input id="apiKey" type="password" placeholder="Paste API key here" />
+      </div>
 
-    <h2>YouTube API</h2>
+      <div>
+        <button class="button" onclick="saveApiKey()">
+          Save key on this device
+        </button>
+      </div>
 
-    <div class="row">
-      <label>YouTube Data API v3 key</label>
+      <h2>Discovery searches</h2>
 
-      <input
-        id="apiKey"
-        type="password"
-        placeholder="Paste API key here">
-    </div>
-
-    <div>
-      <button class="button" onclick="saveApiKey()">
-        Save key on this device
-      </button>
-    </div>
-
-
-    <h2>Discovery searches</h2>
-
-    <label class="queryCheckbox">
-      <input type="checkbox" class="query" value="wildlife cam" checked>
-      wildlife cam
-    </label>
-
-    <label class="queryCheckbox">
-      <input type="checkbox" class="query" value="animal live cam" checked>
-      animal live cam
-    </label>
-
-    <label class="queryCheckbox">
-      <input type="checkbox" class="query" value="bird feeder live cam" checked>
-      bird feeder live cam
-    </label>
-
-    <label class="queryCheckbox">
-      <input type="checkbox" class="query" value="aquarium live cam" checked>
-      aquarium live cam
-    </label>
-
-    <label class="queryCheckbox">
-      <input type="checkbox" class="query" value="ocean live cam" checked>
-      ocean live cam
-    </label>
-
-    <label class="queryCheckbox">
-      <input type="checkbox" class="query" value="zoo live cam" checked>
-      zoo live cam
-    </label>
-
-    <label class="queryCheckbox">
-      <input type="checkbox" class="query" value="africa wildlife live cam" checked>
-      africa wildlife live cam
-    </label>
-
-    <div style="margin-top:12px;">
-      <button class="button primary" onclick="discoverStreams()">
-        Find live cams
-      </button>
-    </div>
-
-    <div id="searchProgress"></div>
-
-
-    <h2>Automatic rotation</h2>
-
-    <div class="row">
-      <label>
-        Change stream every
+      <label class="queryCheckbox">
+        <input type="checkbox" class="query" value="wildlife cam" checked />
+        wildlife cam
       </label>
 
-      <select id="rotationMinutes" onchange="updateRotation()">
-        <option value="0">Don't change automatically</option>
-        <option value="5">Every 5 minutes</option>
-        <option value="10">Every 10 minutes</option>
-        <option value="15">Every 15 minutes</option>
-        <option value="30" selected>Every 30 minutes</option>
-        <option value="60">Every hour</option>
-        <option value="120">Every 2 hours</option>
-        <option value="240">Every 4 hours</option>
-        <option value="1440">Every 24 hours</option>
-        <option value="10080">Every 7 days</option>
-    </select>
-    </div>
-
-    <div class="row">
-      <label>
-        Rotation method
+      <label class="queryCheckbox">
+        <input type="checkbox" class="query" value="animal live cam" checked />
+        animal live cam
       </label>
 
-      <select id="rotationMode">
-        <option value="random">Random</option>
-        <option value="ordered">Go down list</option>
-      </select>
-    </div>
-
-    <div class="row">
-  <label>Refresh available live cams</label>
-
-  <select id="refreshHours" onchange="updateDiscoveryRefresh()">
-    <option value="0">Only when page loads</option>
-    <option value="1">Every hour</option>
-    <option value="2" selected>Every 2 hours</option>
-    <option value="4">Every 4 hours</option>
-    <option value="8">Every 8 hours</option>
-    <option value="12">Every 12 hours</option>
-  </select>
-</div>
-
-
-    <h2>Custom YouTube stream</h2>
-
-    <div class="row">
-      <label>
-        YouTube URL or video ID
+      <label class="queryCheckbox">
+        <input
+          type="checkbox"
+          class="query"
+          value="bird feeder live cam"
+          checked
+        />
+        bird feeder live cam
       </label>
 
-      <input
-        id="customUrl"
-        type="text"
-        placeholder="https://youtube.com/watch?v=...">
+      <label class="queryCheckbox">
+        <input
+          type="checkbox"
+          class="query"
+          value="aquarium live cam"
+          checked
+        />
+        aquarium live cam
+      </label>
+
+      <label class="queryCheckbox">
+        <input type="checkbox" class="query" value="ocean live cam" checked />
+        ocean live cam
+      </label>
+
+      <label class="queryCheckbox">
+        <input type="checkbox" class="query" value="zoo live cam" checked />
+        zoo live cam
+      </label>
+
+      <label class="queryCheckbox">
+        <input
+          type="checkbox"
+          class="query"
+          value="africa wildlife live cam"
+          checked
+        />
+        africa wildlife live cam
+      </label>
+
+      <div style="margin-top: 12px">
+        <button class="button primary" onclick="discoverStreams()">
+          Find live cams
+        </button>
+      </div>
+
+      <div id="searchProgress"></div>
+
+      <h2>Automatic rotation</h2>
+
+      <div class="row">
+        <label> Change stream every </label>
+
+        <select id="rotationMinutes" onchange="updateRotation()">
+          <option value="0">Don't change automatically</option>
+          <option value="5">Every 5 minutes</option>
+          <option value="10">Every 10 minutes</option>
+          <option value="15">Every 15 minutes</option>
+          <option value="30" selected>Every 30 minutes</option>
+          <option value="60">Every hour</option>
+          <option value="120">Every 2 hours</option>
+          <option value="240">Every 4 hours</option>
+          <option value="1440">Every 24 hours</option>
+          <option value="10080">Every 7 days</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label> Rotation method </label>
+
+        <select id="rotationMode">
+          <option value="random">Random</option>
+          <option value="ordered">Go down list</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>Refresh available live cams</label>
+
+        <select id="refreshHours" onchange="updateDiscoveryRefresh()">
+          <option value="0">Only when page loads</option>
+          <option value="1">Every hour</option>
+          <option value="2" selected>Every 2 hours</option>
+          <option value="4">Every 4 hours</option>
+          <option value="8">Every 8 hours</option>
+          <option value="12">Every 12 hours</option>
+        </select>
+      </div>
+
+      <h2>Custom YouTube stream</h2>
+
+      <div class="row">
+        <label> YouTube URL or video ID </label>
+
+        <input
+          id="customUrl"
+          type="text"
+          placeholder="https://youtube.com/watch?v=..."
+        />
+      </div>
+
+      <button class="button" onclick="playCustom()">Show this stream</button>
+
+      <h2>Discovered live cams</h2>
+
+      <div id="status">Press "Find live cams" to search YouTube.</div>
+
+      <div id="results"></div>
     </div>
 
-    <button class="button" onclick="playCustom()">
-      Show this stream
-    </button>
-
-
-    <h2>Discovered live cams</h2>
-
-    <div id="status">
-      Press "Find live cams" to search YouTube.
-    </div>
-
-    <div id="results"></div>
-
-  </div>
-
-
-  <script>
-
-    /* ============================================================
+    <script>
+      /* ============================================================
        STATE
        ============================================================ */
 
-    var streams = [];
-    var currentStreamIndex = -1;
-    var rotationTimer = null;
-var discoveryRefreshTimer = null;
+      var streams = [];
+      var currentStreamIndex = -1;
+      var rotationTimer = null;
+      var discoveryRefreshTimer = null;
 
-    var overlayTimer = null;
-var controlsTimer = null;
+      var overlayTimer = null;
+      var controlsTimer = null;
 
-    /* ============================================================
+      /* ============================================================
        TRUST / SCORING
        ============================================================ */
 
-    var trustedChannelWords = [
-      "explore",
-      "monterey bay",
-      "cornell",
-      "africam",
-      "zoo",
-      "aquarium",
-      "wildlife",
-      "nature",
-      "bird"
-    ];
+      var trustedChannelWords = [
+        "explore",
+        "monterey bay",
+        "cornell",
+        "africam",
+        "zoo",
+        "aquarium",
+        "wildlife",
+        "nature",
+        "bird",
+      ];
 
-    var goodTitleWords = [
-      "cam",
-      "camera",
-      "live",
-      "wildlife",
-      "aquarium",
-      "bird",
-      "birds",
-      "bear",
-      "bears",
-      "ocean",
-      "reef",
-      "jelly",
-      "jellyfish",
-      "elephant",
-      "elephants",
-      "eagle",
-      "eagles",
-      "penguin",
-      "penguins",
-      "panda",
-      "pandas",
-      "giraffe",
-      "giraffes",
-      "waterhole",
-      "nest",
-      "feeder"
-    ];
+      var goodTitleWords = [
+        "cam",
+        "camera",
+        "live",
+        "wildlife",
+        "aquarium",
+        "bird",
+        "birds",
+        "bear",
+        "bears",
+        "ocean",
+        "reef",
+        "jelly",
+        "jellyfish",
+        "elephant",
+        "elephants",
+        "eagle",
+        "eagles",
+        "penguin",
+        "penguins",
+        "panda",
+        "pandas",
+        "giraffe",
+        "giraffes",
+        "waterhole",
+        "nest",
+        "feeder",
+      ];
 
-    var badTitleWords = [
-      "news",
-      "reaction",
-      "podcast",
-      "game",
-      "gaming",
-      "music",
-      "lofi",
-      "study",
-      "breaking",
-      "politics",
-      "commentary",
-      "trailer",
-      "shorts"
-    ];
+      var badTitleWords = [
+        "news",
+        "reaction",
+        "podcast",
+        "game",
+        "gaming",
+        "music",
+        "lofi",
+        "study",
+        "breaking",
+        "politics",
+        "commentary",
+        "trailer",
+        "shorts",
+      ];
 
-
-    /* ============================================================
+      /* ============================================================
        STARTUP
        ============================================================ */
 
-    window.onload = function() {
+      window.onload = function () {
+        loadSettings();
 
-  loadSettings();
+        updateClock();
+        setInterval(updateClock, 1000);
 
-  updateClock();
-  setInterval(updateClock, 1000);
+        updateRotation();
+        updateDiscoveryRefresh();
 
-  updateRotation();
-  updateDiscoveryRefresh();
+        // Initial discovery
+        discoverStreams(false);
 
-  // Initial discovery
-  discoverStreams(false);
+        document.getElementById("playerScreen").onclick = function (event) {
+          /*
+           * Don't interfere when the actual
+           * Controls button is being pressed.
+           */
+          if (event.target.id !== "controlsButton") {
+            showControls();
+          }
+        };
+      };
 
-  document.getElementById("playerScreen").onclick =
-  function(event) {
-
-    /*
-     * Don't interfere when the actual
-     * Controls button is being pressed.
-     */
-    if (event.target.id !== "controlsButton") {
-      showControls();
-    }
-
-  };
-
-};
-
-
-    /* ============================================================
+      /* ============================================================
        CLOCK
        ============================================================ */
 
-    function updateClock() {
+      function updateClock() {
+        var now = new Date();
 
-      var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
 
-      var hours = now.getHours();
-      var minutes = now.getMinutes();
+        var suffix = hours >= 12 ? "PM" : "AM";
 
-      var suffix = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
 
-      hours = hours % 12;
+        if (hours === 0) {
+          hours = 12;
+        }
 
-      if (hours === 0) {
-        hours = 12;
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+
+        // document.getElementById("clock").innerHTML =
+        //   hours + ":" + minutes + " " + suffix;
       }
 
-      if (minutes < 10) {
-        minutes = "0" + minutes;
-      }
-
-      // document.getElementById("clock").innerHTML =
-      //   hours + ":" + minutes + " " + suffix;
-
-    }
-
-
-    /* ============================================================
+      /* ============================================================
        LOCAL SETTINGS
        ============================================================ */
 
-    function loadSettings() {
+      function loadSettings() {
+        var mins = localStorage.getItem("wildlifeWallRotation");
 
-  var mins =
-    localStorage.getItem(
-      "wildlifeWallRotation"
-    );
+        if (mins !== null) {
+          document.getElementById("rotationMinutes").value = mins;
+        } else {
+          document.getElementById("rotationMinutes").value = "30";
+        }
 
-  if (mins !== null) {
-    document.getElementById(
-      "rotationMinutes"
-    ).value = mins;
-  } else {
-    document.getElementById(
-      "rotationMinutes"
-    ).value = "30";
-  }
+        var refreshHours = localStorage.getItem("wildlifeWallRefreshHours");
 
-
-  var refreshHours =
-    localStorage.getItem(
-      "wildlifeWallRefreshHours"
-    );
-
-  if (refreshHours !== null) {
-    document.getElementById(
-      "refreshHours"
-    ).value = refreshHours;
-  } else {
-    document.getElementById(
-      "refreshHours"
-    ).value = "2";
-  }
-
-}
-
-
-    function saveApiKey() {
-
-      var key = document.getElementById("apiKey").value;
-
-      try {
-        localStorage.setItem("wildlifeWallApiKey", key);
-      } catch (e) {
+        if (refreshHours !== null) {
+          document.getElementById("refreshHours").value = refreshHours;
+        } else {
+          document.getElementById("refreshHours").value = "2";
+        }
       }
 
-      setStatus("API key saved on this device.");
+      function saveApiKey() {
+        var key = document.getElementById("apiKey").value;
 
-    }
+        try {
+          localStorage.setItem("wildlifeWallApiKey", key);
+        } catch (e) {}
 
+        setStatus("API key saved on this device.");
+      }
 
-    /* ============================================================
+      /* ============================================================
        ADMIN
        ============================================================ */
 
-    function openAdmin() {
+      function openAdmin() {
+        document.getElementById("admin").className = "open";
+      }
 
-      document.getElementById("admin").className = "open";
+      function closeAdmin() {
+        document.getElementById("admin").className = "";
+      }
 
-    }
-
-
-    function closeAdmin() {
-
-      document.getElementById("admin").className = "";
-
-    }
-
-
-    /* ============================================================
+      /* ============================================================
        DISCOVERY
        ============================================================ */
 
-    function discoverStreams(backgroundRefresh) {
+      function discoverStreams(backgroundRefresh) {
+        setStatus("Finding live wildlife cams...");
 
-  setStatus("Finding live wildlife cams...");
+        var xhr = new XMLHttpRequest();
 
-  var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/wildlife", true);
 
-  xhr.open("GET", "/api/wildlife", true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState !== 4) {
+            return;
+          }
 
-  xhr.onreadystatechange = function() {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              var data = JSON.parse(xhr.responseText);
 
-    if (xhr.readyState !== 4) {
-      return;
-    }
+              var videos = data.videos || [];
 
-    if (xhr.status >= 200 &&
-        xhr.status < 300) {
+              var newStreams = [];
 
-      try {
+              for (var i = 0; i < videos.length; i++) {
+                newStreams.push({
+                  id: videos[i].id,
 
-        var data =
-          JSON.parse(xhr.responseText);
+                  title: videos[i].title || "Wildlife Cam",
 
-        var videos =
-          data.videos || [];
+                  channel: videos[i].channel || "",
 
-        var newStreams = [];
+                  thumbnail: videos[i].thumbnail || "",
 
-        for (var i = 0; i < videos.length; i++) {
+                  score: 1,
+                });
+              }
 
-          newStreams.push({
+              streams = newStreams;
 
-            id: videos[i].id,
+              renderResults();
 
-            title:
-              videos[i].title || "Wildlife Cam",
+              setStatus("Loaded " + streams.length + " live wildlife cams.");
 
-            channel:
-              videos[i].channel || "",
+              /*
+               * If this is the initial load,
+               * immediately choose something.
+               *
+               * During a background refresh,
+               * leave the current stream alone.
+               */
 
-            thumbnail:
-              videos[i].thumbnail || "",
+              if (!backgroundRefresh && streams.length > 0) {
+                surpriseMe();
+              }
+            } catch (e) {
+              setStatus("Couldn't parse wildlife stream list.");
+            }
+          } else {
+            setStatus("Couldn't load wildlife cams: " + xhr.status);
+          }
+        };
 
-            score: 1
-
-          });
-
-        }
-
-        streams = newStreams;
-
-        renderResults();
-
-        setStatus(
-          "Loaded " +
-          streams.length +
-          " live wildlife cams."
-        );
-
-
-        /*
-         * If this is the initial load,
-         * immediately choose something.
-         *
-         * During a background refresh,
-         * leave the current stream alone.
-         */
-
-        if (!backgroundRefresh &&
-            streams.length > 0) {
-
-          surpriseMe();
-
-        }
-
-      } catch (e) {
-
-        setStatus(
-          "Couldn't parse wildlife stream list."
-        );
-
+        xhr.send();
       }
 
-    } else {
+      function searchQueriesOneAtATime(queries, index, apiKey) {
+        if (index >= queries.length) {
+          finishDiscovery();
 
-      setStatus(
-        "Couldn't load wildlife cams: " +
-        xhr.status
-      );
-
-    }
-
-  };
-
-  xhr.send();
-
-}
-
-
-    function searchQueriesOneAtATime(
-      queries,
-      index,
-      apiKey
-    ) {
-
-      if (index >= queries.length) {
-
-        finishDiscovery();
-
-        return;
-
-      }
-
-      document.getElementById("searchProgress").innerHTML =
-        "Searching " +
-        (index + 1) +
-        " / " +
-        queries.length +
-        ": " +
-        queries[index];
-
-      searchYouTube(
-        queries[index],
-        apiKey,
-        function(results) {
-
-          addSearchResults(results);
-
-          searchQueriesOneAtATime(
-            queries,
-            index + 1,
-            apiKey
-          );
-
-        }
-      );
-
-    }
-
-
-    function searchYouTube(
-      query,
-      apiKey,
-      callback
-    ) {
-
-      var url =
-        "https://www.googleapis.com/youtube/v3/search" +
-        "?part=snippet" +
-        "&type=video" +
-        "&eventType=live" +
-        "&videoEmbeddable=true" +
-        "&maxResults=25" +
-        "&q=" + encodeURIComponent(query) +
-        "&key=" + encodeURIComponent(apiKey);
-
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.open("GET", url, true);
-
-
-      xhr.onreadystatechange = function() {
-
-        if (xhr.readyState !== 4) {
           return;
         }
 
+        document.getElementById("searchProgress").innerHTML =
+          "Searching " +
+          (index + 1) +
+          " / " +
+          queries.length +
+          ": " +
+          queries[index];
 
-        if (xhr.status >= 200 &&
-            xhr.status < 300) {
+        searchYouTube(queries[index], apiKey, function (results) {
+          addSearchResults(results);
 
-          try {
+          searchQueriesOneAtATime(queries, index + 1, apiKey);
+        });
+      }
 
-            var data =
-              JSON.parse(xhr.responseText);
+      function searchYouTube(query, apiKey, callback) {
+        var url =
+          "https://www.googleapis.com/youtube/v3/search" +
+          "?part=snippet" +
+          "&type=video" +
+          "&eventType=live" +
+          "&videoEmbeddable=true" +
+          "&maxResults=25" +
+          "&q=" +
+          encodeURIComponent(query) +
+          "&key=" +
+          encodeURIComponent(apiKey);
 
-            callback(data.items || []);
+        var xhr = new XMLHttpRequest();
 
-          } catch (e) {
+        xhr.open("GET", url, true);
 
-            setStatus(
-              "Could not parse YouTube response."
-            );
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState !== 4) {
+            return;
+          }
+
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              var data = JSON.parse(xhr.responseText);
+
+              callback(data.items || []);
+            } catch (e) {
+              setStatus("Could not parse YouTube response.");
+
+              callback([]);
+            }
+          } else {
+            var message = "YouTube API error: " + xhr.status;
+
+            try {
+              var errorData = JSON.parse(xhr.responseText);
+
+              if (errorData.error && errorData.error.message) {
+                message += " — " + errorData.error.message;
+              }
+            } catch (e2) {}
+
+            setStatus(message);
 
             callback([]);
-
           }
+        };
 
-        } else {
+        xhr.send();
+      }
 
-          var message =
-            "YouTube API error: " +
-            xhr.status;
-
-          try {
-
-            var errorData =
-              JSON.parse(xhr.responseText);
-
-            if (errorData.error &&
-                errorData.error.message) {
-
-              message +=
-                " — " +
-                errorData.error.message;
-
-            }
-
-          } catch (e2) {
-          }
-
-          setStatus(message);
-
-          callback([]);
-
-        }
-
-      };
-
-
-      xhr.send();
-
-    }
-
-
-    /* ============================================================
+      /* ============================================================
        PROCESS RESULTS
        ============================================================ */
 
-    function addSearchResults(items) {
+      function addSearchResults(items) {
+        var i;
 
-      var i;
+        for (i = 0; i < items.length; i++) {
+          var item = items[i];
 
-      for (i = 0; i < items.length; i++) {
+          if (!item.id || !item.id.videoId || !item.snippet) {
+            continue;
+          }
 
-        var item = items[i];
+          var videoId = item.id.videoId;
 
-        if (!item.id ||
-            !item.id.videoId ||
-            !item.snippet) {
+          if (streamAlreadyExists(videoId)) {
+            continue;
+          }
 
-          continue;
+          var stream = {
+            id: videoId,
 
+            title: decodeHtml(item.snippet.title || ""),
+
+            channel: decodeHtml(item.snippet.channelTitle || ""),
+
+            thumbnail: getThumbnail(item),
+
+            score: 0,
+          };
+
+          stream.score = calculateScore(stream);
+
+          streams.push(stream);
         }
-
-        var videoId =
-          item.id.videoId;
-
-        if (streamAlreadyExists(videoId)) {
-          continue;
-        }
-
-        var stream = {
-
-          id: videoId,
-
-          title:
-            decodeHtml(
-              item.snippet.title || ""
-            ),
-
-          channel:
-            decodeHtml(
-              item.snippet.channelTitle || ""
-            ),
-
-          thumbnail:
-            getThumbnail(item),
-
-          score: 0
-
-        };
-
-        stream.score =
-          calculateScore(stream);
-
-        streams.push(stream);
-
       }
 
-    }
+      function streamAlreadyExists(videoId) {
+        var i;
 
-
-    function streamAlreadyExists(videoId) {
-
-      var i;
-
-      for (i = 0; i < streams.length; i++) {
-
-        if (streams[i].id === videoId) {
-          return true;
+        for (i = 0; i < streams.length; i++) {
+          if (streams[i].id === videoId) {
+            return true;
+          }
         }
 
+        return false;
       }
 
-      return false;
+      function getThumbnail(item) {
+        try {
+          if (item.snippet.thumbnails.medium) {
+            return item.snippet.thumbnails.medium.url;
+          }
 
-    }
+          if (item.snippet.thumbnails.default) {
+            return item.snippet.thumbnails.default.url;
+          }
+        } catch (e) {}
 
-
-    function getThumbnail(item) {
-
-      try {
-
-        if (item.snippet.thumbnails.medium) {
-
-          return item.snippet.thumbnails.medium.url;
-
-        }
-
-        if (item.snippet.thumbnails.default) {
-
-          return item.snippet.thumbnails.default.url;
-
-        }
-
-      } catch (e) {
+        return "";
       }
 
-      return "";
+      function calculateScore(stream) {
+        var score = 0;
 
-    }
+        var title = stream.title.toLowerCase();
 
+        var channel = stream.channel.toLowerCase();
 
-    function calculateScore(stream) {
+        var i;
 
-      var score = 0;
+        for (i = 0; i < goodTitleWords.length; i++) {
+          if (title.indexOf(goodTitleWords[i]) !== -1) {
+            score += 2;
+          }
+        }
 
-      var title =
-        stream.title.toLowerCase();
+        for (i = 0; i < trustedChannelWords.length; i++) {
+          if (channel.indexOf(trustedChannelWords[i]) !== -1) {
+            score += 4;
+          }
+        }
 
-      var channel =
-        stream.channel.toLowerCase();
+        for (i = 0; i < badTitleWords.length; i++) {
+          if (title.indexOf(badTitleWords[i]) !== -1) {
+            score -= 8;
+          }
+        }
 
-      var i;
-
-
-      for (i = 0;
-           i < goodTitleWords.length;
-           i++) {
-
-        if (title.indexOf(
-              goodTitleWords[i]
-            ) !== -1) {
-
+        if (title.indexOf("live") !== -1) {
           score += 2;
-
         }
 
-      }
-
-
-      for (i = 0;
-           i < trustedChannelWords.length;
-           i++) {
-
-        if (channel.indexOf(
-              trustedChannelWords[i]
-            ) !== -1) {
-
-          score += 4;
-
+        if (title.indexOf("cam") !== -1) {
+          score += 3;
         }
 
+        return score;
       }
 
+      function finishDiscovery() {
+        streams.sort(function (a, b) {
+          return b.score - a.score;
+        });
 
-      for (i = 0;
-           i < badTitleWords.length;
-           i++) {
+        /*
+         * Remove especially suspicious matches.
+         *
+         * Adjust this threshold if YouTube results
+         * are too restrictive.
+         */
 
-        if (title.indexOf(
-              badTitleWords[i]
-            ) !== -1) {
+        var filtered = [];
 
-          score -= 8;
+        var i;
 
+        for (i = 0; i < streams.length; i++) {
+          if (streams[i].score >= 1) {
+            filtered.push(streams[i]);
+          }
         }
 
-      }
+        streams = filtered;
 
+        document.getElementById("searchProgress").innerHTML = "";
 
-      if (title.indexOf("live") !== -1) {
-        score += 2;
-      }
+        if (streams.length === 0) {
+          setStatus("No good live cams found. Try enabling more searches.");
 
-      if (title.indexOf("cam") !== -1) {
-        score += 3;
-      }
+          renderResults();
 
-      return score;
-
-    }
-
-
-    function finishDiscovery() {
-
-      streams.sort(function(a, b) {
-
-        return b.score - a.score;
-
-      });
-
-
-      /*
-       * Remove especially suspicious matches.
-       *
-       * Adjust this threshold if YouTube results
-       * are too restrictive.
-       */
-
-      var filtered = [];
-
-      var i;
-
-      for (i = 0; i < streams.length; i++) {
-
-        if (streams[i].score >= 1) {
-          filtered.push(streams[i]);
+          return;
         }
 
-      }
-
-      streams = filtered;
-
-
-      document.getElementById(
-        "searchProgress"
-      ).innerHTML = "";
-
-
-      if (streams.length === 0) {
-
-        setStatus(
-          "No good live cams found. Try enabling more searches."
-        );
+        setStatus("Found " + streams.length + " possible live wildlife cams.");
 
         renderResults();
 
-        return;
+        /*
+         * If nothing is currently playing,
+         * start with one of the better results.
+         */
 
+        if (document.getElementById("player").src === "") {
+          surpriseMe();
+        }
       }
 
-
-      setStatus(
-        "Found " +
-        streams.length +
-        " possible live wildlife cams."
-      );
-
-
-      renderResults();
-
-
-      /*
-       * If nothing is currently playing,
-       * start with one of the better results.
-       */
-
-      if (document.getElementById("player").src === "") {
-
-        surpriseMe();
-
-      }
-
-    }
-
-
-    /* ============================================================
+      /* ============================================================
        RESULTS LIST
        ============================================================ */
 
-    function renderResults() {
+      function renderResults() {
+        var container = document.getElementById("results");
 
-      var container =
-        document.getElementById("results");
+        container.innerHTML = "";
 
-      container.innerHTML = "";
+        var i;
 
-
-      var i;
-
-      for (i = 0; i < streams.length; i++) {
-
-        container.appendChild(
-          makeResultElement(
-            streams[i],
-            i
-          )
-        );
-
+        for (i = 0; i < streams.length; i++) {
+          container.appendChild(makeResultElement(streams[i], i));
+        }
       }
 
-    }
+      function makeResultElement(stream, index) {
+        var outer = document.createElement("div");
 
+        outer.className = "result";
 
-    function makeResultElement(
-      stream,
-      index
-    ) {
+        var thumbHolder = document.createElement("div");
 
-      var outer =
-        document.createElement("div");
+        thumbHolder.className = "thumbHolder";
 
-      outer.className = "result";
+        var img = document.createElement("img");
 
+        img.className = "thumb";
 
-      var thumbHolder =
-        document.createElement("div");
+        img.src = stream.thumbnail;
 
-      thumbHolder.className =
-        "thumbHolder";
+        thumbHolder.appendChild(img);
 
+        var info = document.createElement("div");
 
-      var img =
-        document.createElement("img");
+        info.className = "resultInfo";
 
-      img.className = "thumb";
+        var title = document.createElement("div");
 
-      img.src = stream.thumbnail;
+        title.className = "resultTitle";
 
-      thumbHolder.appendChild(img);
+        title.innerHTML = escapeHtml(stream.title);
 
+        var channel = document.createElement("div");
 
-      var info =
-        document.createElement("div");
+        channel.className = "resultChannel";
 
-      info.className = "resultInfo";
+        channel.innerHTML = escapeHtml(stream.channel);
 
+        var score = document.createElement("div");
 
-      var title =
-        document.createElement("div");
+        score.className = "score";
 
-      title.className = "resultTitle";
+        score.innerHTML = "Match score: " + stream.score;
 
-      title.innerHTML =
-        escapeHtml(stream.title);
+        var button = document.createElement("button");
 
+        button.className = "button primary";
 
-      var channel =
-        document.createElement("div");
+        button.innerHTML = "Show";
 
-      channel.className =
-        "resultChannel";
-
-      channel.innerHTML =
-        escapeHtml(stream.channel);
-
-
-      var score =
-        document.createElement("div");
-
-      score.className = "score";
-
-      score.innerHTML =
-        "Match score: " +
-        stream.score;
-
-
-      var button =
-        document.createElement("button");
-
-      button.className =
-        "button primary";
-
-      button.innerHTML =
-        "Show";
-
-
-      button.onclick =
-        (function(savedIndex) {
-
-          return function() {
-
+        button.onclick = (function (savedIndex) {
+          return function () {
             playStream(savedIndex);
 
             closeAdmin();
-
           };
-
         })(index);
 
+        info.appendChild(title);
+        info.appendChild(channel);
+        info.appendChild(score);
+        info.appendChild(button);
 
-      info.appendChild(title);
-      info.appendChild(channel);
-      info.appendChild(score);
-      info.appendChild(button);
+        outer.appendChild(thumbHolder);
+        outer.appendChild(info);
 
-      outer.appendChild(thumbHolder);
-      outer.appendChild(info);
+        return outer;
+      }
 
-      return outer;
-
-    }
-
-
-    /* ============================================================
+      /* ============================================================
        PLAYBACK
        ============================================================ */
 
-    function playStream(index) {
+      function playStream(index) {
+        if (index < 0 || index >= streams.length) {
+          return;
+        }
 
-      if (index < 0 ||
-          index >= streams.length) {
+        currentStreamIndex = index;
 
-        return;
+        var stream = streams[index];
 
-      }
+        /*
+         * autoplay=1
+         * mute=1
+         *
+         * Muting is important because browsers often
+         * prohibit automatic video playback with sound.
+         */
 
-      currentStreamIndex = index;
+        var embedUrl =
+          "https://www.youtube.com/embed/" +
+          encodeURIComponent(stream.id) +
+          "?autoplay=1" +
+          "&mute=1" +
+          "&controls=0" +
+          "&rel=0";
 
-      var stream =
-        streams[index];
+        document.getElementById("player").src = embedUrl;
 
-
-      /*
-       * autoplay=1
-       * mute=1
-       *
-       * Muting is important because browsers often
-       * prohibit automatic video playback with sound.
-       */
-
-      var embedUrl =
-        "https://www.youtube.com/embed/" +
-        encodeURIComponent(stream.id) +
-        "?autoplay=1" +
-        "&mute=1" +
-        "&controls=0" +
-        "&rel=0";
-
-
-      document.getElementById(
-        "player"
-      ).src = embedUrl;
-
-
-      document.getElementById(
-        "streamTitle"
-      ).innerHTML =
-        escapeHtml(stream.title);
-
-
-      document.getElementById(
-        "streamChannel"
-      ).innerHTML =
-        escapeHtml(stream.channel);
-
-
-      document.getElementById(
-        "currentInfo"
-      ).innerHTML =
-        "<strong>" +
-        escapeHtml(stream.title) +
-        "</strong><br>" +
-        escapeHtml(stream.channel);
-
-
-      showOverlay();
-
-    }
-
-
-    function surpriseMe() {
-
-      if (streams.length === 0) {
-
-        setStatus(
-          "Find some live cams first."
+        document.getElementById("streamTitle").innerHTML = escapeHtml(
+          stream.title,
         );
 
-        openAdmin();
-
-        return;
-
-      }
-
-
-      /*
-       * Favor the top half of results so randomness
-       * doesn't constantly pick bad search matches.
-       */
-
-    //   var candidateCount =
-    //     Math.ceil(streams.length / 2);
-
-
-    //   if (candidateCount > 20) {
-    //     candidateCount = 20;
-    //   }
-
-      var candidateCount = streams.length;
-
-
-      var index =
-        Math.floor(
-          Math.random() *
-          candidateCount
+        document.getElementById("streamChannel").innerHTML = escapeHtml(
+          stream.channel,
         );
 
+        document.getElementById("currentInfo").innerHTML =
+          "<strong>" +
+          escapeHtml(stream.title) +
+          "</strong><br>" +
+          escapeHtml(stream.channel);
 
-      /*
-       * Avoid immediately choosing the same stream.
-       */
-
-      if (candidateCount > 1 &&
-          index === currentStreamIndex) {
-
-        index =
-          (index + 1) %
-          candidateCount;
-
+        showOverlay();
       }
 
+      function surpriseMe() {
+        if (streams.length === 0) {
+          setStatus("Find some live cams first.");
 
-      playStream(index);
+          openAdmin();
 
-    }
+          return;
+        }
 
+        /*
+         * Favor the top half of results so randomness
+         * doesn't constantly pick bad search matches.
+         */
 
-    function nextStream() {
+        //   var candidateCount =
+        //     Math.ceil(streams.length / 2);
 
-      if (streams.length === 0) {
+        //   if (candidateCount > 20) {
+        //     candidateCount = 20;
+        //   }
 
-        setStatus(
-          "Find some live cams first."
-        );
+        var candidateCount = streams.length;
 
-        return;
+        var index = Math.floor(Math.random() * candidateCount);
 
+        /*
+         * Avoid immediately choosing the same stream.
+         */
+
+        if (candidateCount > 1 && index === currentStreamIndex) {
+          index = (index + 1) % candidateCount;
+        }
+
+        playStream(index);
       }
 
+      function nextStream() {
+        if (streams.length === 0) {
+          setStatus("Find some live cams first.");
 
-      var mode =
-        document.getElementById(
-          "rotationMode"
-        ).value;
+          return;
+        }
 
+        var mode = document.getElementById("rotationMode").value;
 
-      if (mode === "random") {
+        if (mode === "random") {
+          surpriseMe();
 
-        surpriseMe();
+          return;
+        }
 
-        return;
+        var next = currentStreamIndex + 1;
 
+        if (next >= streams.length) {
+          next = 0;
+        }
+
+        playStream(next);
       }
 
-
-      var next =
-        currentStreamIndex + 1;
-
-
-      if (next >= streams.length) {
-        next = 0;
-      }
-
-
-      playStream(next);
-
-    }
-
-
-    /* ============================================================
+      /* ============================================================
        CUSTOM YOUTUBE URL
        ============================================================ */
 
-    function playCustom() {
+      function playCustom() {
+        var input = document.getElementById("customUrl").value;
 
-      var input =
-        document.getElementById(
-          "customUrl"
-        ).value;
+        var videoId = extractYouTubeId(input);
 
+        if (!videoId) {
+          setStatus("I couldn't determine the YouTube video ID.");
 
-      var videoId =
-        extractYouTubeId(input);
+          return;
+        }
 
+        var stream = {
+          id: videoId,
 
-      if (!videoId) {
+          title: "Custom YouTube stream",
 
-        setStatus(
-          "I couldn't determine the YouTube video ID."
-        );
+          channel: "Manually selected",
 
-        return;
+          thumbnail: "https://img.youtube.com/vi/" + videoId + "/mqdefault.jpg",
 
+          score: 100,
+        };
+
+        streams.unshift(stream);
+
+        currentStreamIndex = 0;
+
+        playStream(0);
+
+        renderResults();
+
+        closeAdmin();
       }
 
+      function extractYouTubeId(input) {
+        if (!input) {
+          return null;
+        }
 
-      var stream = {
+        input = input.replace(/^\s+|\s+$/g, "");
 
-        id: videoId,
+        /*
+         * Just a video ID
+         */
 
-        title:
-          "Custom YouTube stream",
+        if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
+          return input;
+        }
 
-        channel:
-          "Manually selected",
+        /*
+         * youtube.com/watch?v=
+         */
 
-        thumbnail:
-          "https://img.youtube.com/vi/" +
-          videoId +
-          "/mqdefault.jpg",
+        var match = input.match(/[?&]v=([A-Za-z0-9_-]{11})/);
 
-        score: 100
+        if (match) {
+          return match[1];
+        }
 
-      };
+        /*
+         * youtu.be/
+         */
 
+        match = input.match(/youtu\.be\/([A-Za-z0-9_-]{11})/);
 
-      streams.unshift(stream);
+        if (match) {
+          return match[1];
+        }
 
-      currentStreamIndex = 0;
+        /*
+         * youtube.com/embed/
+         */
 
-      playStream(0);
+        match = input.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{11})/);
 
-      renderResults();
+        if (match) {
+          return match[1];
+        }
 
-      closeAdmin();
-
-    }
-
-
-    function extractYouTubeId(input) {
-
-      if (!input) {
         return null;
       }
 
-      input =
-        input.replace(/^\s+|\s+$/g, "");
-
-
-      /*
-       * Just a video ID
-       */
-
-      if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
-
-        return input;
-
-      }
-
-
-      /*
-       * youtube.com/watch?v=
-       */
-
-      var match =
-        input.match(/[?&]v=([A-Za-z0-9_-]{11})/);
-
-      if (match) {
-        return match[1];
-      }
-
-
-      /*
-       * youtu.be/
-       */
-
-      match =
-        input.match(
-          /youtu\.be\/([A-Za-z0-9_-]{11})/
-        );
-
-      if (match) {
-        return match[1];
-      }
-
-
-      /*
-       * youtube.com/embed/
-       */
-
-      match =
-        input.match(
-          /youtube\.com\/embed\/([A-Za-z0-9_-]{11})/
-        );
-
-      if (match) {
-        return match[1];
-      }
-
-
-      return null;
-
-    }
-
-
-    /* ============================================================
+      /* ============================================================
        ROTATION
        ============================================================ */
 
-    function updateRotation() {
+      function updateRotation() {
+        if (rotationTimer) {
+          clearInterval(rotationTimer);
 
-      if (rotationTimer) {
+          rotationTimer = null;
+        }
 
-        clearInterval(rotationTimer);
-
-        rotationTimer = null;
-
-      }
-
-
-      var minutes =
-        parseInt(
-          document.getElementById(
-            "rotationMinutes"
-          ).value,
-          10
+        var minutes = parseInt(
+          document.getElementById("rotationMinutes").value,
+          10,
         );
 
+        try {
+          localStorage.setItem("wildlifeWallRotation", minutes);
+        } catch (e) {}
 
-      try {
+        if (!minutes) {
+          return;
+        }
 
-        localStorage.setItem(
-          "wildlifeWallRotation",
-          minutes
-        );
-
-      } catch (e) {
+        rotationTimer = setInterval(nextStream, minutes * 60 * 1000);
       }
 
+      function updateDiscoveryRefresh() {
+        if (discoveryRefreshTimer) {
+          clearInterval(discoveryRefreshTimer);
+          discoveryRefreshTimer = null;
+        }
 
-      if (!minutes) {
-        return;
+        var hours = parseInt(document.getElementById("refreshHours").value, 10);
+
+        try {
+          localStorage.setItem("wildlifeWallRefreshHours", hours);
+        } catch (e) {}
+
+        if (!hours) {
+          return;
+        }
+
+        discoveryRefreshTimer = setInterval(
+          function () {
+            discoverStreams(true);
+          },
+          hours * 60 * 60 * 1000,
+        );
       }
 
-
-      rotationTimer =
-        setInterval(
-          nextStream,
-          minutes * 60 * 1000
-        );
-
-    }
-
-    function updateDiscoveryRefresh() {
-
-  if (discoveryRefreshTimer) {
-    clearInterval(discoveryRefreshTimer);
-    discoveryRefreshTimer = null;
-  }
-
-  var hours =
-    parseInt(
-      document.getElementById("refreshHours").value,
-      10
-    );
-
-  try {
-    localStorage.setItem(
-      "wildlifeWallRefreshHours",
-      hours
-    );
-  } catch (e) {
-  }
-
-  if (!hours) {
-    return;
-  }
-
-  discoveryRefreshTimer =
-    setInterval(
-      function() {
-        discoverStreams(true);
-      },
-      hours * 60 * 60 * 1000
-    );
-}
-
-
-    /* ============================================================
+      /* ============================================================
        OVERLAY
        ============================================================ */
 
-    function showOverlay() {
+      function showOverlay() {
+        var overlay = document.getElementById("overlay");
 
-      var overlay =
-        document.getElementById(
-          "overlay"
-        );
+        overlay.className = "visible";
 
-      overlay.className =
-        "visible";
+        if (overlayTimer) {
+          clearTimeout(overlayTimer);
+        }
 
-
-      if (overlayTimer) {
-        clearTimeout(overlayTimer);
+        overlayTimer = setTimeout(function () {
+          overlay.className = "";
+        }, 6000);
       }
 
+      function showControls() {
+        var button = document.getElementById("controlsButton");
 
-      overlayTimer =
-        setTimeout(
-          function() {
+        button.className = "visible";
 
-            overlay.className = "";
+        if (controlsTimer) {
+          clearTimeout(controlsTimer);
+        }
 
-          },
-          6000
-        );
+        controlsTimer = setTimeout(function () {
+          button.className = "";
+        }, 4000);
+      }
 
-    }
-
-    function showControls() {
-
-  var button =
-    document.getElementById("controlsButton");
-
-  button.className = "visible";
-
-  if (controlsTimer) {
-    clearTimeout(controlsTimer);
-  }
-
-  controlsTimer =
-    setTimeout(
-      function() {
-        button.className = "";
-      },
-      4000
-    );
-}
-
-
-    /* ============================================================
+      /* ============================================================
        HELPERS
        ============================================================ */
 
-    function setStatus(message) {
+      function setStatus(message) {
+        document.getElementById("status").innerHTML = escapeHtml(message);
+      }
 
-      document.getElementById(
-        "status"
-      ).innerHTML =
-        escapeHtml(message);
+      function escapeHtml(value) {
+        var div = document.createElement("div");
 
-    }
+        div.appendChild(document.createTextNode(value || ""));
 
+        return div.innerHTML;
+      }
 
-    function escapeHtml(value) {
+      function decodeHtml(value) {
+        var textarea = document.createElement("textarea");
 
-      var div =
-        document.createElement("div");
+        textarea.innerHTML = value || "";
 
-      div.appendChild(
-        document.createTextNode(
-          value || ""
-        )
-      );
-
-      return div.innerHTML;
-
-    }
-
-
-    function decodeHtml(value) {
-
-      var textarea =
-        document.createElement("textarea");
-
-      textarea.innerHTML =
-        value || "";
-
-      return textarea.value;
-
-    }
-
-  </script>
-
-</body>
+        return textarea.value;
+      }
+    </script>
+  </body>
 </html>
