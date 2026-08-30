@@ -3,6 +3,9 @@
 A simple fullscreen wildlife livestream display. Currently deployed to https://display.briancher.in/.
 
 The site finds live wildlife cameras from YouTube and automatically rotates between them.
+Results are cached for two hours. If YouTube search quota is unavailable, discovery falls
+back to live, embeddable streams from Explore Live Nature Cams, Monterey Bay Aquarium,
+and Africam.
 
 ### Local development
 
